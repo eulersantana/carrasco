@@ -1,3 +1,4 @@
 #Ignorando planilha
 *.xls
 *.xlsx
+*.repo

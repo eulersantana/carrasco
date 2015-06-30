@@ -109,7 +109,7 @@ for prova_aluno in respostas:
 	alunos.append(aluno_aux)	
 	nota_objetiva = 0;
 
-	arquivo = open('Relatório.txt', 'w')
+	arquivo = open('Relatório.repo', 'w')
 	arquivo.write(aluno_aux.salvar())
 	arquivo.close()
 	
