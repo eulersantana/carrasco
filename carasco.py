@@ -3,32 +3,44 @@
 # João Paulo F. Guimarães -  29/06/2015
 # joao.guimaraes@ifrn.edu.br
 
+#para o system clear
+import os
+
+#Classe prova
+class prova:
+	objetivas_certas = []
+	objetivas_erradas = []
+	subjetiva = []
+	def nota_objetiva(self):
+		return len(self.objetivas_certas) - len(self.objetivas_erradas)
+
 #Classe Aluno - guarda as informações básicas de cada aluno que fez a prova
 class aluno:
 	matricula = 0
 	nome = ""
 	email = ""
 	acertos = -1
+	p = prova()
 	
 	def __init__(self,nome,email,matricula):
 		self.matricula = str(matricula)
 		self.nome = nome
 		self.email = email
 	def imprimir(self):
-		print "--------------------------\n"
 		print "Nome: ", self.nome
 		print "Matrícula: ", self.matricula
 		print "email: ", self.email
-		print "acertos: " , self.acertos
+		print "--------------------------"
+		
 	def salvar(self):
 		string = "--------------------------\n" + "Nome: "
 		string = string + self.nome
 		string = string + "\nMatricula: "
-		string = string + self.matricula
+		string = string + str(self.matricula)
 		string = string + "\nEmail: "
-		string = string + self.email
-		string = string + "\Nota Objetiva: "
-		string = string + self.acertos
+		string = string + str(self.email)
+		string = string + "\nNota Objetiva: "
+		string = string + str(self.p.nota_objetiva())
 
 		return string
 		
@@ -70,9 +82,6 @@ gabarito = linhas[len(linhas)-1]
 lista_de_questoes_objetivas = [5,6,7,8,9,10,11] 
 lista_de_questoes_subjetivas = [4,12,13,14,15,16,17] 
 
-#Variável auxiliar para dar as notas aos alunos
-nota_objetiva = 0
-
 #Gabiarra do naosei - Falha no unicode
 naosei = perguntas[0]
 
@@ -82,44 +91,43 @@ for prova_aluno in respostas:
 	
 	#Objeto aluno auxiliar com os dados pessoais dos aluno
 	aluno_aux = aluno(prova_aluno[1],prova_aluno[2],int(prova_aluno[3]))
+	alunos.append(aluno_aux)
 
-	#Questão objetiva	
-	for i in lista_de_questoes_objetivas:
-		print "\n"
-		print "Pergunta: ", perguntas[i]
-		print "Resposta aluno: ", prova_aluno[i]			
-		print "Gabarito: ", gabarito[i]
-		if(prova_aluno[i] == gabarito[i]):
-			nota_objetiva = nota_objetiva+1
-		else:
-			if(prova_aluno[i] != naosei ):
-				nota_objetiva = nota_objetiva-1
-				print prova_aluno[i]			
-		print "\n"
-	#Questões subjetivas	
-	for i in lista_de_questoes_subjetivas:
-		print "\n"	
-		print i, "Questão subjetiva"
-		print "Pergunta: ", perguntas[i]
-		print "Resposta aluno: ", prova_aluno[i]			
-		nota_aux = raw_input( "Qual a nota da questão 0-10?")
-	
-	#incluindo na lista de alunos	
-	aluno_aux.acertos = nota_objetiva
-	alunos.append(aluno_aux)	
-	nota_objetiva = 0;
-
-	arquivo = open('Relatório.repo', 'w')
-	arquivo.write(aluno_aux.salvar())
-	arquivo.close()
-	
-
-	
-	
-
+escolha = 0
 for aluno in alunos:
+	print "[", escolha, "]" 
 	aluno.imprimir()
-	
+	escolha = escolha+1
+	print "\n"
+aluno = int(raw_input( "Selecione o aluno que você deseja avaliar"))	
+
+#Questões objetiva
+for i in lista_de_questoes_objetivas:	
+	print "\n"
+	print "Pergunta: ", perguntas[i]
+	print "Resposta aluno: ", prova_aluno[i]			
+	print "Gabarito: ", gabarito[i]
+	if(prova_aluno[i] == gabarito[i]):
+		alunos[aluno].p.objetivas_certas.append(i)
+	else:
+		if(prova_aluno[i] != naosei ):
+			alunos[aluno].p.objetivas_erradas.append(i)
+	print "\n"
+'''
+#Questões subjetivas	
+for i in lista_de_questoes_subjetivas:
+	print "\n"	
+	print i, "Questão subjetiva"
+	print "Pergunta: ", perguntas[i]
+	print "\nResposta aluno: ", prova_aluno[i]			
+	nota_aux = raw_input( "Qual a nota da questão 0-10?")
+'''
+
+arquivo = open('relatorio.repo', 'a')
+arquivo.write(str(alunos[aluno].salvar()))
+arquivo.write("\n")
+arquivo.close()
+
 
 
 
