@@ -10,9 +10,10 @@ import os
 class prova:
 	objetivas_certas = []
 	objetivas_erradas = []
-	subjetiva = []
+	subjetivas = []
 	def nota_objetiva(self):
 		return len(self.objetivas_certas) - len(self.objetivas_erradas)
+
 
 #Classe Aluno - guarda as informações básicas de cada aluno que fez a prova
 class aluno:
@@ -41,6 +42,8 @@ class aluno:
 		string = string + str(self.email)
 		string = string + "\nNota Objetiva: "
 		string = string + str(self.p.nota_objetiva())
+		string = string + "\nSubjetivas: "
+		string = string + str(self.p.subjetivas)
 
 		return string
 		
@@ -99,7 +102,7 @@ for aluno in alunos:
 	aluno.imprimir()
 	escolha = escolha+1
 	print "\n"
-aluno = int(raw_input( "Selecione o aluno que você deseja avaliar"))	
+aluno = int(raw_input( "Selecione o aluno que você deseja avaliar\n"))	
 
 #Questões objetiva
 for i in lista_de_questoes_objetivas:	
@@ -113,15 +116,17 @@ for i in lista_de_questoes_objetivas:
 		if(prova_aluno[i] != naosei ):
 			alunos[aluno].p.objetivas_erradas.append(i)
 	print "\n"
-'''
+
 #Questões subjetivas	
 for i in lista_de_questoes_subjetivas:
-	print "\n"	
+	os.system("clear")
 	print i, "Questão subjetiva"
 	print "Pergunta: ", perguntas[i]
 	print "\nResposta aluno: ", prova_aluno[i]			
-	nota_aux = raw_input( "Qual a nota da questão 0-10?")
-'''
+	nota = raw_input( "Qual a nota da questão 0-10?\n")
+	tupla_aux = [i,nota]
+	alunos[aluno].p.subjetivas.append(tupla_aux)
+	os.system("clear")
 
 arquivo = open('relatorio.repo', 'a')
 arquivo.write(str(alunos[aluno].salvar()))
