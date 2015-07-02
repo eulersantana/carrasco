@@ -11,9 +11,14 @@ class prova:
 	objetivas_certas = []
 	objetivas_erradas = []
 	subjetivas = []
+	nota_sub = 0
 	def nota_objetiva(self):
 		return len(self.objetivas_certas) - len(self.objetivas_erradas)
-
+	'''def nota_subjetiva(self):
+		for questao in self.subjetivas:
+			self.nota_sub = self.nota_sub + int(questao[1])
+		#print int(self.nota_sub)
+'''
 
 #Classe Aluno - guarda as informações básicas de cada aluno que fez a prova
 class aluno:
@@ -22,11 +27,15 @@ class aluno:
 	email = ""
 	acertos = -1
 	p = prova()
-	
 	def __init__(self,nome,email,matricula):
 		self.matricula = str(matricula)
 		self.nome = nome
 		self.email = email
+		path = "correcoes"
+		if not os.path.exists(path):
+			os.mkdir(path)
+		filename = self.nome[0] +  self.nome[1] + self.nome[2] + self.nome[3] + "_" + self.matricula + ".res"		
+		self.arquivo = open(os.path.join(path,filename),'a')
 	def imprimir(self):
 		print "Nome: ", self.nome
 		print "Matrícula: ", self.matricula
@@ -34,18 +43,17 @@ class aluno:
 		print "--------------------------"
 		
 	def salvar(self):
-		string = "--------------------------\n" + "Nome: "
-		string = string + self.nome
-		string = string + "\nMatricula: "
-		string = string + str(self.matricula)
-		string = string + "\nEmail: "
-		string = string + str(self.email)
-		string = string + "\nNota Objetiva: "
-		string = string + str(self.p.nota_objetiva())
-		string = string + "\nSubjetivas: "
-		string = string + str(self.p.subjetivas)
-
-		return string
+		self.arquivo.write("\n--------------------------\nNome: ")
+		self.arquivo.write( self.nome.encode('utf-8') )
+		self.arquivo.write( "\nMatricula: ")
+		self.arquivo.write( self.matricula)
+		self.arquivo.write( "\nEmail: ")
+		self.arquivo.write( self.email)
+		self.arquivo.write( "\nNota Objetiva: ")
+		self.arquivo.write( str(self.p.nota_objetiva()) )
+		self.arquivo.write( "\nSubjetivas: ")
+		self.arquivo.write( str(self.p.subjetivas) )
+		self.arquivo.close()	
 		
 	
 #Importe da ferramente de trabalhar com excel
@@ -123,16 +131,14 @@ for i in lista_de_questoes_subjetivas:
 	print i, "Questão subjetiva"
 	print "Pergunta: ", perguntas[i]
 	print "\nResposta aluno: ", prova_aluno[i]			
-	nota = raw_input( "Qual a nota da questão 0-10?\n")
+	#nota = raw_input( "Qual a nota da questão 0-10?\n")
+	nota = 2
 	tupla_aux = [i,nota]
 	alunos[aluno].p.subjetivas.append(tupla_aux)
 	os.system("clear")
 
-arquivo = open('relatorio.repo', 'a')
-arquivo.write(str(alunos[aluno].salvar()))
-arquivo.write("\n")
-arquivo.close()
 
+alunos[aluno].salvar()
 
 
 
