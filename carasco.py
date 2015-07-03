@@ -138,6 +138,7 @@ aluno = int(raw_input( "Selecione o aluno que você deseja avaliar\n"))
 #Questões objetiva
 for i in lista_de_questoes_objetivas:	
 	print "\n"
+
 	print "Pergunta: ", perguntas[i]
 	print "Resposta aluno: ", alunos[aluno].respostas[i]			
 	print "Gabarito: ", gabarito[i]
