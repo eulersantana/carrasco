@@ -2,23 +2,37 @@
 # Script de testes - Python - corretor de provas
 # João Paulo F. Guimarães -  29/06/2015
 # joao.guimaraes@ifrn.edu.br
-
+from __future__ import division
 #para o system clear
 import os
+
+
 
 #Classe prova
 class prova:
 	objetivas_certas = []
 	objetivas_erradas = []
 	subjetivas = []
+	nota_ob = 0
 	nota_sub = 0
+	peso_objetiva = 4
+	peso_subjetiva = 6
+	nota_final = 0
 	def nota_objetiva(self):
-		return len(self.objetivas_certas) - len(self.objetivas_erradas)
-	'''def nota_subjetiva(self):
+		self.nota_ob = ((len(self.objetivas_certas) - len(self.objetivas_erradas))*10)/7
+		return self.nota_ob
+	def nota_subjetiva(self):
 		for questao in self.subjetivas:
 			self.nota_sub = self.nota_sub + int(questao[1])
-		#print int(self.nota_sub)
-'''
+		self.nota_sub = self.nota_sub/7
+		return self.nota_sub
+	def nota(self):
+		x = self.nota_objetiva()
+		y = self.nota_subjetiva()
+		self.nota_final = (x*self.peso_objetiva + y*self.peso_subjetiva)/(self.peso_objetiva+self.peso_subjetiva)
+		return self.nota_final
+		
+
 
 #Classe Aluno - guarda as informações básicas de cada aluno que fez a prova
 class aluno:
@@ -49,10 +63,18 @@ class aluno:
 		self.arquivo.write( self.matricula)
 		self.arquivo.write( "\nEmail: ")
 		self.arquivo.write( self.email)
+		self.arquivo.write( "\nObjetivas certas: ")	
+		self.arquivo.write( str(self.p.objetivas_certas))
+		self.arquivo.write( "\nObjetivas erradas: ")	
+		self.arquivo.write( str(self.p.objetivas_erradas))		
 		self.arquivo.write( "\nNota Objetiva: ")
 		self.arquivo.write( str(self.p.nota_objetiva()) )
 		self.arquivo.write( "\nSubjetivas: ")
 		self.arquivo.write( str(self.p.subjetivas) )
+		self.arquivo.write( "\nNota Subjetiva: ")
+		self.arquivo.write( str(self.p.nota_subjetiva()) )
+		self.arquivo.write( "\nNota Avaliação: ")
+		self.arquivo.write( str(self.p.nota()) )
 		self.arquivo.close()	
 		
 	
@@ -90,8 +112,8 @@ for i in range(1,len(linhas)-1):
 gabarito = linhas[len(linhas)-1]
 
 #Metadados prova
-lista_de_questoes_objetivas = [5,6,7,8,9,10,11] 
-lista_de_questoes_subjetivas = [4,12,13,14,15,16,17] 
+lista_de_questoes_objetivas = [5,6,7,8,9,10,11] #7 objetivas
+lista_de_questoes_subjetivas = [4,12,13,14,15,16,17] # 7 subjetivas
 
 #Gabiarra do naosei - Falha no unicode
 naosei = perguntas[0]
@@ -131,8 +153,7 @@ for i in lista_de_questoes_subjetivas:
 	print i, "Questão subjetiva"
 	print "Pergunta: ", perguntas[i]
 	print "\nResposta aluno: ", prova_aluno[i]			
-	#nota = raw_input( "Qual a nota da questão 0-10?\n")
-	nota = 2
+	nota = raw_input( "Qual a nota da questão 0-10?\n")
 	tupla_aux = [i,nota]
 	alunos[aluno].p.subjetivas.append(tupla_aux)
 	os.system("clear")
