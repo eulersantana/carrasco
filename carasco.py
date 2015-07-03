@@ -6,8 +6,6 @@ from __future__ import division
 #para o system clear
 import os
 
-
-
 #Classe prova
 class prova:
 	objetivas_certas = []
@@ -41,10 +39,12 @@ class aluno:
 	email = ""
 	acertos = -1
 	p = prova()
-	def __init__(self,nome,email,matricula):
+	respostas = []
+	def __init__(self,nome,email,matricula,respostas):
 		self.matricula = str(matricula)
 		self.nome = nome
 		self.email = email
+		self.respostas = respostas
 		path = "correcoes"
 		if not os.path.exists(path):
 			os.mkdir(path)
@@ -123,7 +123,7 @@ alunos = []
 for prova_aluno in respostas:
 	
 	#Objeto aluno auxiliar com os dados pessoais dos aluno
-	aluno_aux = aluno(prova_aluno[1],prova_aluno[2],int(prova_aluno[3]))
+	aluno_aux = aluno(prova_aluno[1],prova_aluno[2],int(prova_aluno[3]),prova_aluno)
 	alunos.append(aluno_aux)
 
 escolha = 0
@@ -134,25 +134,26 @@ for aluno in alunos:
 	print "\n"
 aluno = int(raw_input( "Selecione o aluno que você deseja avaliar\n"))	
 
+
 #Questões objetiva
 for i in lista_de_questoes_objetivas:	
 	print "\n"
 	print "Pergunta: ", perguntas[i]
-	print "Resposta aluno: ", prova_aluno[i]			
+	print "Resposta aluno: ", alunos[aluno].respostas[i]			
 	print "Gabarito: ", gabarito[i]
-	if(prova_aluno[i] == gabarito[i]):
+	if(alunos[aluno].respostas[i] == gabarito[i]):
 		alunos[aluno].p.objetivas_certas.append(i)
 	else:
-		if(prova_aluno[i] != naosei ):
+		if(alunos[aluno].respostas[i] != naosei ):
 			alunos[aluno].p.objetivas_erradas.append(i)
 	print "\n"
 
 #Questões subjetivas	
 for i in lista_de_questoes_subjetivas:
 	os.system("clear")
-	print i, "Questão subjetiva"
+	print i, "Questão subjetiva - Aluno: ", alunos[aluno].respostas[1]
 	print "Pergunta: ", perguntas[i]
-	print "\nResposta aluno: ", prova_aluno[i]			
+	print "\nResposta aluno: ", alunos[aluno].respostas[i]		
 	nota = raw_input( "Qual a nota da questão 0-10?\n")
 	tupla_aux = [i,nota]
 	alunos[aluno].p.subjetivas.append(tupla_aux)
@@ -160,6 +161,5 @@ for i in lista_de_questoes_subjetivas:
 
 
 alunos[aluno].salvar()
-
 
 
