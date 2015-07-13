@@ -17,17 +17,22 @@ class prova:
 	peso_subjetiva = 6
 	nota_final = 0
 	def nota_objetiva(self):
-		self.nota_ob = ((len(self.objetivas_certas) - len(self.objetivas_erradas))*10)/7
+		self.nota_ob = (len(self.objetivas_certas) - len(self.objetivas_erradas))*10
+		self.nota_ob = self.nota_ob/7
 		return self.nota_ob
 	def nota_subjetiva(self):
 		for questao in self.subjetivas:
 			self.nota_sub = self.nota_sub + int(questao[1])
+			print "@@@@@@@@@@@@@@@@@@@"
+			print self.nota_sub, int(questao[1])
 		self.nota_sub = self.nota_sub/7
 		return self.nota_sub
 	def nota(self):
 		x = self.nota_objetiva()
 		y = self.nota_subjetiva()
 		self.nota_final = (x*self.peso_objetiva + y*self.peso_subjetiva)/(self.peso_objetiva+self.peso_subjetiva)
+		print "#############"
+		print x, y
 		return self.nota_final
 		
 
@@ -67,14 +72,14 @@ class aluno:
 		self.arquivo.write( str(self.p.objetivas_certas))
 		self.arquivo.write( "\nObjetivas erradas: ")	
 		self.arquivo.write( str(self.p.objetivas_erradas))		
+		self.arquivo.write( "\nNota Avaliação: ")
+		self.arquivo.write( str(self.p.nota()) )
 		self.arquivo.write( "\nNota Objetiva: ")
-		self.arquivo.write( str(self.p.nota_objetiva()) )
+		self.arquivo.write( str(self.p.nota_ob) )
 		self.arquivo.write( "\nSubjetivas: ")
 		self.arquivo.write( str(self.p.subjetivas) )
 		self.arquivo.write( "\nNota Subjetiva: ")
-		self.arquivo.write( str(self.p.nota_subjetiva()) )
-		self.arquivo.write( "\nNota Avaliação: ")
-		self.arquivo.write( str(self.p.nota()) )
+		self.arquivo.write( str(self.p.nota_sub) )
 		self.arquivo.close()	
 		
 	
